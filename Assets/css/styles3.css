@@ -1,0 +1,143 @@
+body {
+    width: 1400px;
+    background-color: #ffbf00;
+}
+  
+#top_stuff {
+    width: 1400px;
+    height: 300px;
+    color: white;
+    background-color: blue;
+}
+
+#whole_shebang {
+    width: 1200px;
+}
+
+#local_london {
+    height: 210px;
+    width: 350px;
+    float: left;
+    margin-top: 40px;
+    margin-left: 50px; 
+}
+
+.text-center {
+    float: left; 
+    margin-top: 100px;
+    margin-left: 70px;
+}
+
+#red_train {
+    height: 210px;
+    width: 350px;
+    float: left;
+    margin-top: 40px;
+    margin-left: 100px; 
+}
+
+
+#curr_train_sched {
+    margin-top: 20px;
+    margin-left: 50px;
+    font-size: 25px;
+    color: blue;
+    text-emphasis: bold;
+}
+
+tbody {
+    border: 3px;
+    border-color: blue;
+}
+
+#current_train {
+    float: left;
+    padding: 5px;
+    margin-left: 45px;
+    background-color: white;
+    border: 3px;
+    border-color: blue;
+}
+
+th {
+    color: blue;
+    text-emphasis: bold;
+}
+
+#train_name_head {
+    width: 220px; 
+    margin-left: 30px;
+}
+
+#dest_head {
+    width: 180px; 
+}
+
+#freq_head {
+    width: 170px;
+}
+ 
+#next_arriv_head {
+    width: 150px; 
+}
+
+#min_away_head {
+    width: 150px;
+}
+
+td {
+    color: blue;
+    text-emphasis: bold;
+}
+
+#freqy {
+    text-anchor: end;
+}
+
+.col-lg-6 {
+    margin-left: 220px;
+    height: 520px;
+    padding: 10px;
+    background-color: red;
+/*    background-color: #ccccff; */
+}
+
+.card {
+    float: left;
+    margin-left: 80px;
+}
+
+
+.card-header {
+    color: white;
+    background-color: blue;
+    text-emphasis: bold;
+}
+
+.card-body {
+    float: left;
+    width: 400px;
+    background-color: #80b3ff;
+    border: 3px;
+    height: 450px;
+}
+
+label {
+    margin-left: 10px;
+    text-emphasis: bold;
+    color: blue;
+}
+
+/*#name-input {
+    width: 600px;
+} */
+
+.btn-default {
+    float: left;
+    color: blue;
+    text-emphasis: bold;
+    background-color: white;
+}
+
+
+

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>Train Schedules</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- Our CSS style sheet -->
+  <link rel="stylesheet" href="assets/css/styles3.css">
+
+</head>
+
+
+<body>
+
+  <container id="whole_shebang">
+
+    <!-- Jumbotron -->
+    <div id="top_stuff">
+        <img src="assets/images/local_london_train.jpg" id="local_london">
+        <h1 class="text-center">Any Time is Train Time</h1>
+        <img src="assets/images/red_thomas_tank_engine.jpg" id="red_train">
+    </div>
+
+    <p id="curr_train_sched"><strong>Current train schedule</strong></p>
+
+    <table id="current_train",border=3, border-color=blue, frame=hsides, rules=rows rules-color: blue>
+        <thead>
+            <th id="train_name_head">Train Name</th>
+            <th id="dest_head">Destination</th>
+            <th id="freq_head">Frequency (Min)</th>
+            <th id="next_arriv_head">Next Arrival</th>
+            <th id="min_away_head">Minutes Away</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+        </table>
+    </table>
+
+        <div class="card card-default">
+          <div class="card-header">
+            <strong>Add a Train</strong>
+          </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="form-group row">
+                <label for="name-input"><strong>Train Name:</strong></label>
+                <input class="form-control" id="name-input" type="text">
+              </div>
+          <div class="form-group row">
+            <label for="dest-input"><strong>Destination:</strong></label>
+            <input class="form-control" id="dest-input" type="text">
+          </div>
+          <div class="form-group row">
+            <label for="first-input"><strong>First Train Time (in military time):</strong></label>
+            <input class="form-control" id="first-input" type="number">
+          </div>
+          <div class="form-group row">
+              <label for="freq-input"><strong>Frequency (min):</strong></label>
+              <input class="form-control" id="freq-input" type="number">
+          </div>
+          <button class="btn btn-default" id="add-train" type="submit"><strong>Submit</strong></button>
+            </form>
+        </div>
+
+
+
+  </container>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery.js"></script>
+
+<!-- Link to Moment.js -->
+<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+<!-- Link to Firebase -->
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+
+<!-- Script -->
+<script>
+
+// Initialize Firebase
+
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyB-dX-1X45Jt_Wr67cv-f1FUgPuzU0-u1M",
+    authDomain: "train-project-9d87c.firebaseapp.com",
+    databaseURL: "https://train-project-9d87c.firebaseio.com",
+    projectId: "train-project-9d87c",
+    storageBucket: "train-project-9d87c.appspot.com",
+    messagingSenderId: "376992821548"
+  };
+  firebase.initializeApp(config);
+
+// Creates a variable to initialize the database
+  var database = firebase.database();
+
+  var dataRef = firebase.database();
+
+
+// Initial values
+var name = "";
+var dest = "";
+var first = 0;
+var freq = 0;
+
+// Capture button click
+$("#add-train").on("click", function(event) {
+  // Don't refresh the page
+  event.preventDefault();
+
+  // Trim the inputs
+  name = $("#name-input").val().trim();
+  dest = $("#dest-input").val().trim();
+  first = $("#first-input").val().trim().moment.format("HH:mm").subtract(1,"years");
+  freq = $("#freq-input").val().trim();
+
+  // Push and provide initial data to database  
+  database.ref().push ({
+    name: name,
+    dest: dest,
+    first: first,
+    freq: freq
+    });
+
+})    
+
+  // Firebase watcher + initial loader
+  dataRef.ref().on("child_added", function(childSnapshot) {
+ 
+    m = moment().format(MM/DD/YYYY);
+
+    console.log("Today's date: " + m);
+
+
+
+
+
+
+
+    // Log everything that's coming out of Snapshot
+    console.log(childSnapshot.val().name);
+    console.log(childSnapshot.val().dest);
+    console.log(childSnapshot.val().first);
+    console.log(childSnapshot.val().freq);
+    
+    //for (next < (now + freq); (next = first + freq);)
+    
+    var name = childSnapshot.val().name;
+    var dest = childSnapshot.val().dest;
+    var freq = childSnapshot.val().freq;
+    var f_train = childSnapshot.val().first;
+    var diff = moment().diff(moment.unix(f_train),"minutes");
+
+    /*
+    first_train = 21 Jan 1980 = timestamp: 12344567876743
+    diff = 89954332223456687 - 12344567876743= 250867
+    */
+    console.log("Difference:"+diff);
+    var timeRemaining =  moment().diff(moment.unix(f_train),"minutes")%freq; //250%17
+    console.log("Remaining time: "+timeRemaining);
+    var min = freq - timeRemaining;
+    console.log("Minutes: " + min);
+    var nextArrival = moment().add(min,"m").format("hh:mm A")
+    var markup = "<tr><td>" + name + "</td><td>" + dest + "</td><td>" + freq + "</td><td>"+nextArrival+"</td><td>"+min+"</td></tr>"
+      // Add a row to the table
+      $("tbody").append(markup);
+
+    // Handle the errors
+    function errorObject (errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+    } 
+  
+  })
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+</html>
